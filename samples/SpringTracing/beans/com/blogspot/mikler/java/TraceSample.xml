@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="simpleTraceInterceptor" class="org.springframework.aop.interceptor.SimpleTraceInterceptor">
+        <property name="useDynamicLogger" value="true"/>
+    </bean>
+    <bean id="debugInterceptor" class="org.springframework.aop.interceptor.DebugInterceptor">
+        <property name="useDynamicLogger" value="true"/>
+    </bean>
+
+    <bean id="bean1" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.blogspot.mikler.java.Bean1">
+                <property name="bean2" ref="bean2"/>
+            </bean>
+        </property>
+        <property name="interceptorNames" value="simpleTraceInterceptor"/>
+    </bean>
+
+    <bean id="bean2" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.blogspot.mikler.java.Bean2"/>
+        </property>
+        <property name="interceptorNames" value="simpleTraceInterceptor"/>
+    </bean>
+
+</beans>
