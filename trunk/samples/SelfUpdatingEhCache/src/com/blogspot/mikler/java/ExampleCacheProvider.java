@@ -8,7 +8,6 @@ import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 public class ExampleCacheProvider {
     private CacheManager cacheManager;
     private CacheEntryFactory updatingFactory;
-//    public UpdatingSelfPopulatingCache updatingSelfPopulatingCache;
     public SelfPopulatingCache selfPopulatingCache;
 
     public ExampleCacheProvider() throws Exception {
@@ -22,7 +21,7 @@ public class ExampleCacheProvider {
             updatingFactory = new ExampleUpdatingCacheEntryFactory();
         }
         selfPopulatingCache = new SelfPopulatingCache(originalCache, updatingFactory);
-
+        //chache refresh thread
         Thread updatingThread = new Thread(){
             public void run() {
                 super.run();
