@@ -11,7 +11,7 @@ public class Reader {
 
     public void run(){
         Ehcache cache = exampleCacheProvider.getCache();
-        StringBuffer fooOriginalBuffer = (StringBuffer) cache.get("foo").getValue();
+        final StringBuffer fooOriginalBuffer = (StringBuffer) cache.get("foo").getValue();
         for (int i = 0; i < 5; i++){
             System.out.println("----------------------------------");
             System.out.println("Starting iteration " + i);
