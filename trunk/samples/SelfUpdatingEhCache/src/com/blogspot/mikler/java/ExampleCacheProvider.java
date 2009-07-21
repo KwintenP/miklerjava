@@ -2,9 +2,6 @@ package com.blogspot.mikler.java;
 
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.constructs.blocking.UpdatingSelfPopulatingCache;
-import net.sf.ehcache.constructs.blocking.UpdatingCacheEntryFactory;
 import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 
@@ -18,7 +15,12 @@ public class ExampleCacheProvider {
         cacheManager = CacheManager.create();
         Ehcache  originalCache = cacheManager.getCache("com.blogspot.mikler.java.cache");
 
-        updatingFactory = new ExampleUpdatingCacheEntryFactory();
+        final String cacheType = System.getProperty("com.blogspot.mikler.java.cache.factory");
+        if (cacheType == null || cacheType.equals("create")){
+            updatingFactory = new ExampleCacheEntryFactory();
+        } else {
+            updatingFactory = new ExampleUpdatingCacheEntryFactory();
+        }
         selfPopulatingCache = new SelfPopulatingCache(originalCache, updatingFactory);
 
         Thread updatingThread = new Thread(){

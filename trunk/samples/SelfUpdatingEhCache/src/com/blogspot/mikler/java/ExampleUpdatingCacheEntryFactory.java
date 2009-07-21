@@ -1,17 +1,19 @@
 package com.blogspot.mikler.java;
 
 import net.sf.ehcache.constructs.blocking.UpdatingCacheEntryFactory;
-import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 
-public class ExampleUpdatingCacheEntryFactory implements CacheEntryFactory {
+/**
+ * TODO Class description
+ *
+ * @author Mikhail Kolesnik
+ *         Timestamp: Jul 21, 2009 4:53:47 PM
+ */
+public class ExampleUpdatingCacheEntryFactory extends ExampleCacheEntryFactory
+                                              implements UpdatingCacheEntryFactory {
     public void updateEntryValue(Object key, Object value) throws Exception {
         System.out.println("~~~~~~UPDATING entry for key = " + key);
         final StringBuffer stringBuffer = (StringBuffer) value;
         stringBuffer.append(stringBuffer.length()- ((String) key).length());
     }
 
-    public Object createEntry(Object key) throws Exception {
-        System.out.println("++++++creating entry for key = " + key);
-        return new StringBuffer(key+"0");
-    }
 }

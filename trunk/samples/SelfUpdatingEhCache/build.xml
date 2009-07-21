@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_selfupdatingehcache" default="run">
+
+  <!--<property name="module.jdk.home.selfupdatingehcache" value="${project.jdk.home}"/>-->
+  <!--<property name="module.jdk.bin.selfupdatingehcache" value="${project.jdk.bin}"/>-->
+  <!--<property name="module.jdk.classpath.selfupdatingehcache" value="${project.jdk.classpath}"/>-->
+  <!---->
+  <!--<property name="compiler.args.selfupdatingehcache" value="${compiler.args}"/>-->
+  
+  <property name="selfupdatingehcache.output.dir" value="out"/>
+
+
+  <path id="selfupdatingehcache.module.classpath">
+    <!--<path refid="${module.jdk.classpath.selfupdatingehcache}"/>-->
+    <pathelement location="lib/commons-logging-1.0.4.jar"/>
+    <pathelement location="lib/commons-collections-2.1.1.jar"/>
+    <pathelement location="lib/ehcache-1.6.0.jar"/>
+  </path>
+  
+  <path id="selfupdatingehcache.runtime.module.classpath">
+    <pathelement location="${selfupdatingehcache.output.dir}"/>
+    <pathelement location="lib/commons-logging-1.0.4.jar"/>
+    <pathelement location="lib/commons-collections-2.1.1.jar"/>
+    <pathelement location="lib/ehcache-1.6.0.jar"/>
+    <pathelement location="lib/xerces-2.6.2.jar"/>
+    <pathelement location="config"/>
+  </path>
+  
+
+  <target name="compile.module.selfupdatingehcache" description="Compile module SelfUpdatingEhCache; production classes">
+    <mkdir dir="${selfupdatingehcache.output.dir}"/>
+    <javac destdir="${selfupdatingehcache.output.dir}"  fork="true" srcdir="src">
+      <classpath refid="selfupdatingehcache.module.classpath"/>
+    </javac>
+  </target>
+
+  <target name="run" depends="clean.module.selfupdatingehcache, compile.module.selfupdatingehcache">
+      <echo>Running with CacheEntryFactory</echo>
+      <java classname="com.blogspot.mikler.java.Reader"
+            classpathref="selfupdatingehcache.runtime.module.classpath"
+            fork="true">
+          <sysproperty key="com.blogspot.mikler.java.cache.factory" value="create"/>
+      </java>
+      <echo>
+
+
+          Running with UpdatingCacheEntryFactory
+      </echo>
+      <java classname="com.blogspot.mikler.java.Reader" classpathref="selfupdatingehcache.runtime.module.classpath" fork="true">
+          <sysproperty key="com.blogspot.mikler.java.cache.factory" value="update"/>
+      </java>
+  </target>
+
+  <target name="clean.module.selfupdatingehcache" description="cleanup module">
+    <delete dir="${selfupdatingehcache.output.dir}"/>
+  </target>
+</project>
